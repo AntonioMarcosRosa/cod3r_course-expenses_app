@@ -19,6 +19,7 @@ class ExpensesApp extends StatelessWidget {
           primary: Colors.purple,
           secondary: Colors.purple,
         ),
+        errorColor: const Color.fromARGB(255, 255, 131, 122),
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
               button: const TextStyle(
@@ -85,6 +86,12 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop();
   }
 
+  _removeTransaction(String transactionId) {
+    setState(() {
+      _transactions.removeWhere((transaction) =>transaction.id == transactionId);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Chart(_recentTransactions),
             ),
             Column(children: [
-              TransactionList(_transactions),
+              TransactionList(_transactions, _removeTransaction),
             ]),
           ],
         ),
