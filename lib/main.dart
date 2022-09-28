@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'components/chart.dart';
 import 'models/transaction.dart';
 import 'dart:math';
 import 'components/transaction_form.dart';
@@ -16,10 +17,12 @@ class ExpensesApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: tema.colorScheme.copyWith(
           primary: Colors.purple,
-          secondary: Colors.amber,
+          secondary: Colors.purple,
         ),
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
+              button: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold),
               headline6: const TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 18,
@@ -48,20 +51,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta de Luz',
-      value: 211.30,
-      date: DateTime.now(),
-    ),
-  ];
+  final List<Transaction> _transactions = [];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(
+        const Duration(days: 7),
+      ));
+    }).toList();
+  }
+
   _openTransactionFormModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -71,19 +70,19 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime dateOfTransaction) {
     final newTrasaction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: dateOfTransaction,
     );
 
     setState(() {
       _transactions.add(newTrasaction);
     });
 
-    Navigator.of(context).pop;
+    Navigator.of(context).pop();
   }
 
   @override
@@ -101,11 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            const SizedBox(
+            SizedBox(
               width: double.infinity,
-              child: Card(
-                child: Text('Gráfico'),
-              ),
+              child: Chart(_recentTransactions),
             ),
             Column(children: [
               TransactionList(_transactions),
