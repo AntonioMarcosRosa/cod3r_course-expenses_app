@@ -44,58 +44,65 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 6,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(children: [
-          TextField(
-            controller: _titleController,
-            onSubmitted: (_) => _submitForm(),
-            decoration: const InputDecoration(
-              labelText: 'Título',
-            ),
-          ),
-          TextField(
-            controller: _valueController,
-            keyboardType: TextInputType.number,
-            onSubmitted: (_) => _submitForm(),
-            decoration: const InputDecoration(labelText: 'Valor (R\$)'),
-          ),
-          SizedBox(
-            height: 80,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(_selectedDate != null
-                      ? DateFormat('d MMM y').format(_selectedDate!)
-                      : 'Nenhuma data selecionada!'),
-                ),
-                TextButton(
-                  onPressed: _showDatePicker,
-                  child: const Text(
-                    'Selecionar data',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: Text(
-                  'Nova Transação',
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.button?.color,
-                  ),
-                ),
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(
+          top: 10,
+          right: 10,
+          left: 10,
+          bottom: 10 + MediaQuery.of(context).viewInsets.bottom),
+      child: Card(
+        elevation: 6,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(children: [
+            TextField(
+              controller: _titleController,
+              onSubmitted: (_) => _submitForm(),
+              decoration: const InputDecoration(
+                labelText: 'Título',
               ),
-            ],
-          )
-        ]),
+            ),
+            TextField(
+              controller: _valueController,
+              keyboardType: TextInputType.number,
+              onSubmitted: (_) => _submitForm(),
+              decoration: const InputDecoration(labelText: 'Valor (R\$)'),
+            ),
+            SizedBox(
+              height: 80,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(_selectedDate != null
+                        ? DateFormat('d MMM y').format(_selectedDate)
+                        : 'Nenhuma data selecionada!'),
+                  ),
+                  TextButton(
+                    onPressed: _showDatePicker,
+                    child: const Text(
+                      'Selecionar data',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: _submitForm,
+                  child: Text(
+                    'Nova Transação',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.button?.color,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ]),
+        ),
       ),
     );
   }
