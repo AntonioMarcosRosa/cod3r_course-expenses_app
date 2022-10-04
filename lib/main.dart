@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final chartList = Platform.isIOS ? CupertinoIcons.refresh : Icons.show_chart;
 
     final appBarActions = [
-      if (isLandscape)
+      if (isLandscape) 
         _getIconButton(
           _showChart ? iconList : chartList,
           () {
